@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { api } from '../api/client';
 import type { OverviewResponse } from '../types/api';
 import { DecisionBadge } from '../components/DecisionBadge';
-import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 
 interface Props {
   onNavigateToInspector: () => void;
@@ -56,7 +55,7 @@ export const Overview: React.FC<Props> = ({ onNavigateToInspector, onNavigateToE
     );
   }
 
-  const { kpis, activity, recent_events } = data;
+  const { kpis, recent_events } = data;
 
   return (
     <div className="flex flex-col gap-8 max-w-7xl mx-auto">
@@ -149,51 +148,6 @@ export const Overview: React.FC<Props> = ({ onNavigateToInspector, onNavigateToE
         </div>
       </div>
 
-      {/* Activity Timeline Chart */}
-      <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h3 className="text-base font-semibold text-slate-900">7-Day Threat Activity Timeline</h3>
-            <p className="text-xs text-slate-500 mt-0.5">Aggregated audit events from local SQLite database</p>
-          </div>
-          <div className="flex items-center gap-4 text-xs font-mono">
-            <div className="flex items-center gap-1.5">
-              <span className="w-3 h-3 rounded-sm bg-cyan-600"></span>
-              <span className="text-slate-600 font-medium">Total Analyzed</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <span className="w-3 h-3 rounded-sm bg-red-500"></span>
-              <span className="text-slate-600 font-medium">Attacks Detected</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="h-64 w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={activity} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-              <defs>
-                <linearGradient id="totalGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#0891b2" stopOpacity={0.25}/>
-                  <stop offset="95%" stopColor="#0891b2" stopOpacity={0}/>
-                </linearGradient>
-                <linearGradient id="attacksGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#ef4444" stopOpacity={0.25}/>
-                  <stop offset="95%" stopColor="#ef4444" stopOpacity={0}/>
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
-              <XAxis dataKey="label" stroke="#64748b" fontSize={11} tickLine={false} />
-              <YAxis stroke="#64748b" fontSize={11} tickLine={false} allowDecimals={false} />
-              <Tooltip
-                contentStyle={{ backgroundColor: '#ffffff', borderColor: '#e2e8f0', borderRadius: '8px', fontSize: '12px', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                itemStyle={{ color: '#0f172a' }}
-              />
-              <Area type="monotone" dataKey="total" stroke="#0891b2" strokeWidth={2} fillOpacity={1} fill="url(#totalGrad)" name="Total Requests" />
-              <Area type="monotone" dataKey="attacks" stroke="#ef4444" strokeWidth={2} fillOpacity={1} fill="url(#attacksGrad)" name="Attacks" />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
 
       {/* Recent Events Table */}
       <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-xs">
