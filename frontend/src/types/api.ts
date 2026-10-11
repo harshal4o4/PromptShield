@@ -15,6 +15,7 @@ export interface AnalysisRequest {
   source_type?: SourceType;
   trust_level?: TrustLevel;
   context?: Record<string, any>;
+  call_model?: boolean;
 }
 
 export interface AnalysisResponse {
@@ -27,6 +28,20 @@ export interface AnalysisResponse {
   analyzed_at: string;
   detector_version: string;
   policy_version: string;
+  model_response?: string | null;
+  output_security_check?: string | null;
+  execution_latency_ms?: number | null;
+  threat_categories?: string[];
+  rule_identifiers?: string[];
+}
+
+export interface FileInspectionResponse {
+  filename: string;
+  file_type: string;
+  size_bytes: number;
+  extracted_length: number;
+  extracted_excerpt: string;
+  analysis: AnalysisResponse;
 }
 
 export interface EventItem {

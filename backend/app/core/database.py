@@ -55,6 +55,13 @@ DEFAULT_POLICY_CONFIG = {
             "severity": "medium",
             "action": "SANITIZE",
             "description": "Detects base64, hex, or unicode control obfuscation patterns."
+        },
+        "PROMPT_GUARD_CLASSIFIER": {
+            "name": "Prompt Guard AI Classifier",
+            "enabled": True,
+            "severity": "high",
+            "action": "BLOCK",
+            "description": "Specialized prompt injection classifier (Meta Llama Prompt Guard 2)."
         }
     },
     "severity_actions": {

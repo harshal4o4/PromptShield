@@ -1,6 +1,6 @@
 import json
 from datetime import datetime, timezone
-from typing import Optional, Literal
+from typing import Optional, Literal, List
 from app.services.detector import DetectionResult
 from app.services.sanitization import Sanitizer, SanitizationResult
 from app.core.database import get_db_connection, DEFAULT_POLICY_CONFIG
@@ -14,7 +14,10 @@ class DecisionResult:
         summary: str,
         sanitized_text: Optional[str],
         policy_version: str,
-        evaluated_at: str
+        evaluated_at: str,
+        threat_categories: Optional[List[str]] = None,
+        source: str = "user",
+        rule_identifiers: Optional[List[str]] = None
     ):
         self.decision = decision
         self.risk_level = risk_level
@@ -22,6 +25,9 @@ class DecisionResult:
         self.sanitized_text = sanitized_text
         self.policy_version = policy_version
         self.evaluated_at = evaluated_at
+        self.threat_categories = threat_categories or []
+        self.source = source
+        self.rule_identifiers = rule_identifiers or []
 
 
 class PolicyEngine:
@@ -49,6 +55,7 @@ class PolicyEngine:
         sanitization_enabled = policy.get("sanitization_enabled", True)
         ambiguous_escalation = policy.get("ambiguous_escalation", True)
         evaluated_at = datetime.now(timezone.utc).isoformat()
+        source = detection.source_type
 
         # Filter signals based on enabled state in policy
         active_signals = []
@@ -59,15 +66,21 @@ class PolicyEngine:
                 continue
             active_signals.append(s)
 
+        rule_identifiers = list(set(s.rule_id for s in active_signals))
+        threat_categories = list(set(s.label for s in active_signals))
+
         # Case 1: No active risk signals
         if not active_signals:
             return DecisionResult(
                 decision="ALLOW",
                 risk_level="low",
-                summary="No policy-triggering risk was detected in the submitted payload.",
+                summary="No policy-triggering threat was detected in the submitted payload.",
                 sanitized_text=None,
                 policy_version=policy_version,
-                evaluated_at=evaluated_at
+                evaluated_at=evaluated_at,
+                threat_categories=[],
+                source=source,
+                rule_identifiers=[]
             )
 
         # Assess highest severity among active signals
@@ -92,10 +105,13 @@ class PolicyEngine:
                 summary=f"Multiple conflicting threat vectors detected ({', '.join(rule_ids)}). Escalated for human triage.",
                 sanitized_text=None,
                 policy_version=policy_version,
-                evaluated_at=evaluated_at
+                evaluated_at=evaluated_at,
+                threat_categories=threat_categories,
+                source=source,
+                rule_identifiers=rule_identifiers
             )
 
-        # Map through severity action or specific rule action
+        # Map through specific rule action or severity action
         rule_actions = [rules_conf.get(s.rule_id, {}).get("action") for s in active_signals if rules_conf.get(s.rule_id, {}).get("action")]
         if "BLOCK" in rule_actions:
             target_action = "BLOCK"
@@ -119,7 +135,10 @@ class PolicyEngine:
                         summary=f"Defensible sanitization performed: {san_res.rationale}.",
                         sanitized_text=sanitized_payload,
                         policy_version=policy_version,
-                        evaluated_at=evaluated_at
+                        evaluated_at=evaluated_at,
+                        threat_categories=threat_categories,
+                        source=source,
+                        rule_identifiers=rule_identifiers
                     )
                 else:
                     # Fallback when sanitization is not defensible
@@ -137,5 +156,8 @@ class PolicyEngine:
             summary=summary,
             sanitized_text=sanitized_payload,
             policy_version=policy_version,
-            evaluated_at=evaluated_at
+            evaluated_at=evaluated_at,
+            threat_categories=threat_categories,
+            source=source,
+            rule_identifiers=rule_identifiers
         )

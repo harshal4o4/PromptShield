@@ -8,7 +8,17 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.core.config import settings
 from app.core.database import init_db
-from app.api.routes import health, analyze, overview, events, policies, evaluation, settings as app_settings
+from app.api.routes import (
+    health,
+    analyze,
+    inspect,
+    gateway,
+    overview,
+    events,
+    policies,
+    evaluation,
+    settings as app_settings
+)
 
 logging.basicConfig(
     level=getattr(logging, settings.log_level.upper(), logging.INFO),
@@ -78,6 +88,8 @@ async def general_exception_handler(request: Request, exc: Exception):
 # Include API routers
 app.include_router(health.router)
 app.include_router(analyze.router)
+app.include_router(inspect.router)
+app.include_router(gateway.router)
 app.include_router(overview.router)
 app.include_router(events.router)
 app.include_router(policies.router)

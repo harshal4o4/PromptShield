@@ -1,43 +1,41 @@
 from fastapi import APIRouter
 from app.schemas.analysis import AnalysisRequest, AnalysisResponse
+from app.services.pipeline import SecurityPipeline
 
 router = APIRouter(prefix="/api/v1/analyze", tags=["Analyze"])
+
+# Global pipeline instance
+pipeline = SecurityPipeline()
 
 
 @router.post("", response_model=AnalysisResponse)
 def analyze_prompt(payload: AnalysisRequest):
-    """Analyze input text, detect prompt injection / data exfiltration, apply policy, and persist audit event."""
-    from app.services.detector import SecurityDetector
-    from app.services.policy_engine import PolicyEngine
-    from app.services.audit import AuditService
-
-    detector = SecurityDetector()
-    policy_engine = PolicyEngine()
-    audit_service = AuditService()
-
-    detection_result = detector.analyze(
+    """
+    Executes PromptShield Security Pipeline:
+    Input Validation → Extraction & Normalization → Threat Detection → Policy Engine
+    → Security Decision → Protected AI Model (only when permitted) → Output Security Check → Audit Log
+    """
+    res = pipeline.process_text(
         text=payload.text,
         source_type=payload.source_type,
         trust_level=payload.trust_level,
+        call_model=payload.call_model,
         context=payload.context or {}
     )
 
-    decision_result = policy_engine.evaluate(detection_result)
-
-    event_id = audit_service.log_event(
-        request=payload,
-        detection=detection_result,
-        decision=decision_result
-    )
-
     return AnalysisResponse(
-        event_id=event_id,
-        decision=decision_result.decision,
-        risk_level=decision_result.risk_level,
-        summary=decision_result.summary,
-        signals=detection_result.signals,
-        sanitized_text=decision_result.sanitized_text,
-        analyzed_at=decision_result.evaluated_at,
-        detector_version=detection_result.detector_version,
-        policy_version=decision_result.policy_version
+        event_id=res.event_id,
+        decision=res.decision,
+        risk_level=res.risk_level,
+        summary=res.summary,
+        signals=res.signals,
+        sanitized_text=res.sanitized_text,
+        analyzed_at=res.analyzed_at,
+        detector_version=res.detector_version,
+        policy_version=res.policy_version,
+        model_response=res.model_response,
+        output_security_check=res.output_security_check,
+        execution_latency_ms=res.execution_latency_ms,
+        threat_categories=res.threat_categories,
+        rule_identifiers=res.rule_identifiers
     )

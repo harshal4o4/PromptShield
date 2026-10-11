@@ -1,6 +1,7 @@
 import type {
   AnalysisRequest,
   AnalysisResponse,
+  FileInspectionResponse,
   EventsListResponse,
   EventDetail,
   OverviewResponse,
@@ -41,6 +42,18 @@ export const api = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
+    });
+    return handleResponse(res);
+  },
+
+  async inspectFile(file: File, callModel: boolean = false): Promise<FileInspectionResponse> {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('call_model', callModel ? 'true' : 'false');
+
+    const res = await fetch(`${API_BASE}/api/v1/inspect/file`, {
+      method: 'POST',
+      body: formData,
     });
     return handleResponse(res);
   },

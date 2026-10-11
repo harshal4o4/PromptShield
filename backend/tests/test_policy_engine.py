@@ -29,6 +29,7 @@ def test_policy_disabled_rule_ignored():
         "version": "test-v1",
         "rules": {
             "DIRECT_OVERRIDE": {"name": "Direct Override", "enabled": False, "severity": "high", "action": "BLOCK"},
+            "PROMPT_GUARD_CLASSIFIER": {"name": "Prompt Guard", "enabled": False, "severity": "high", "action": "BLOCK"},
         },
         "severity_actions": {"high": "BLOCK", "low": "ALLOW"}
     }
