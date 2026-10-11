@@ -1,0 +1,16 @@
+{
+  "run_id": "run-20261011-1405",
+  "started_at": "2026-10-11T08:44:28.243407+00:00",
+  "completed_at": "2026-10-11T08:44:29.891114+00:00",
+  "environment": {
+    "os": "Windows",
+    "python_version": "3.14.4",
+    "fastapi_backend": "http://127.0.0.1:8000",
+    "vite_frontend": "http://127.0.0.1:5173",
+    "db_type": "SQLite 3.50.4 (WAL mode)",
+    "app_version": "1.0.0",
+    "detector_version": "rules-v1"
+  },
+  "test_suite_version": "matrix-v1.0",
+  "total_test_cases": 98
+}
