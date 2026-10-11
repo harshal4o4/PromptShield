@@ -1,0 +1,62 @@
+# Local Reference Documents
+*.docx
+*.doc
+PromptShield_PRD_Antigravity_Google_Stitch.docx
+PromptShield_Security_Dashboard_Frontend_Requirements.docx
+
+# Compressed Archives
+*.zip
+*.tar.gz
+*.rar
+*.7z
+reports.zip
+
+# Python & Virtual Environments
+__pycache__/
+*.py[cod]
+*$py.class
+*.pytest_cache/
+.pytest_cache/
+.venv/
+backend/.venv/
+env/
+venv/
+*.egg-info/
+.eggs/
+
+# Databases & Backups
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+*.bak
+*.backup
+backend/*.bak
+backend/*.db*
+
+# Node / Frontend Build Artifacts
+node_modules/
+frontend/node_modules/
+frontend/dist/
+dist/
+dist-ssr/
+.npm/
+*.tsbuildinfo
+
+# Environment & Secrets (Preserve .env.example templates)
+.env
+.env.local
+*.local
+backend/.env
+!.env.example
+!backend/.env.example
+
+# IDE, OS & Editor Artifacts
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
