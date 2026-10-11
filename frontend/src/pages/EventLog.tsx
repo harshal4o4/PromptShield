@@ -70,18 +70,18 @@ export const EventLog: React.FC = () => {
     <div className="flex flex-col gap-6 max-w-7xl mx-auto">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-semibold text-slate-100 tracking-tight">Security Event Log</h1>
-        <p className="text-sm text-slate-400 mt-1">
+        <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Security Event Log</h1>
+        <p className="text-sm text-slate-600 mt-1">
           Immutable audit trail of prompt inspections, mitigation decisions, and policy signals.
         </p>
       </div>
 
       {/* Filters Bar */}
-      <div className="bg-[#0F172A] border border-slate-800 rounded-xl p-4 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+      <div className="bg-white border border-slate-200 rounded-xl p-4 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 shadow-xs">
         {/* Search */}
         <form onSubmit={handleSearchSubmit} className="flex-1 flex items-center gap-2">
           <div className="relative flex-1">
-            <span className="material-symbols-outlined absolute left-3 top-2.5 text-slate-500 text-[18px]">
+            <span className="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-[18px]">
               search
             </span>
             <input
@@ -89,12 +89,12 @@ export const EventLog: React.FC = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search by summary or excerpt..."
-              className="w-full bg-[#090D16] border border-slate-700 rounded-lg pl-9 pr-3 py-2 text-xs font-mono text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-cyan-400"
+              className="w-full bg-slate-50 border border-slate-300 rounded-lg pl-9 pr-3 py-2 text-xs font-mono text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-cyan-600 focus:bg-white"
             />
           </div>
           <button
             type="submit"
-            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-mono text-slate-200 rounded-lg transition"
+            className="px-4 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-xs font-mono font-medium text-slate-700 rounded-lg transition"
           >
             Search
           </button>
@@ -105,7 +105,7 @@ export const EventLog: React.FC = () => {
           <select
             value={decisionFilter}
             onChange={(e) => { setDecisionFilter(e.target.value); setPage(1); }}
-            className="bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs font-mono text-slate-300 focus:outline-none focus:border-cyan-400"
+            className="bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-mono text-slate-800 focus:outline-none focus:border-cyan-600 focus:bg-white"
           >
             <option value="ALL">All Decisions</option>
             <option value="ALLOW">ALLOW Only</option>
@@ -117,7 +117,7 @@ export const EventLog: React.FC = () => {
           <select
             value={riskFilter}
             onChange={(e) => { setRiskFilter(e.target.value); setPage(1); }}
-            className="bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs font-mono text-slate-300 focus:outline-none focus:border-cyan-400"
+            className="bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-mono text-slate-800 focus:outline-none focus:border-cyan-600 focus:bg-white"
           >
             <option value="all">All Risk Levels</option>
             <option value="critical">Critical</option>
@@ -128,7 +128,7 @@ export const EventLog: React.FC = () => {
 
           <button
             onClick={fetchEvents}
-            className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 transition"
+            className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 transition"
             title="Refresh"
           >
             <span className="material-symbols-outlined text-[16px]">sync</span>
@@ -137,17 +137,17 @@ export const EventLog: React.FC = () => {
       </div>
 
       {error && (
-        <div className="p-4 bg-red-950/30 border border-red-500/40 rounded-xl text-xs font-mono text-red-300">
+        <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-xs font-mono text-red-700">
           Error: {error}
         </div>
       )}
 
       {/* Main Table & Drawer View */}
       <div className="relative">
-        <div className="bg-[#0F172A] border border-slate-800 rounded-xl overflow-hidden">
+        <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-xs">
           {loading ? (
-            <div className="p-12 text-center text-xs font-mono text-slate-400 flex items-center justify-center gap-2">
-              <div className="w-4 h-4 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+            <div className="p-12 text-center text-xs font-mono text-slate-500 flex items-center justify-center gap-2">
+              <div className="w-4 h-4 border-2 border-cyan-600 border-t-transparent rounded-full animate-spin"></div>
               <span>Querying audit event records...</span>
             </div>
           ) : events.length === 0 ? (
@@ -157,7 +157,7 @@ export const EventLog: React.FC = () => {
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs font-mono">
-                <thead className="bg-slate-900/80 border-b border-slate-800 text-slate-400 uppercase text-[11px]">
+                <thead className="bg-slate-50 border-b border-slate-200 text-slate-600 uppercase text-[11px] font-semibold">
                   <tr>
                     <th className="py-3 px-4">Timestamp</th>
                     <th className="py-3 px-4">Decision</th>
@@ -169,14 +169,14 @@ export const EventLog: React.FC = () => {
                     <th className="py-3 px-4 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/60">
+                <tbody className="divide-y divide-slate-100">
                   {events.map((ev) => (
                     <tr
                       key={ev.id}
                       onClick={() => handleSelectRow(ev.id)}
-                      className={`cursor-pointer transition hover:bg-slate-800/40 ${selectedEventId === ev.id ? 'bg-cyan-500/10 border-l-2 border-l-cyan-400' : ''}`}
+                      className={`cursor-pointer transition hover:bg-slate-50 ${selectedEventId === ev.id ? 'bg-cyan-50/80 border-l-4 border-l-cyan-600' : ''}`}
                     >
-                      <td className="py-3 px-4 text-slate-400 whitespace-nowrap">
+                      <td className="py-3 px-4 text-slate-500 whitespace-nowrap">
                         {new Date(ev.timestamp).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}
                       </td>
                       <td className="py-3 px-4">
@@ -185,23 +185,23 @@ export const EventLog: React.FC = () => {
                       <td className="py-3 px-4">
                         <SeverityBadge severity={ev.risk_level} />
                       </td>
-                      <td className="py-3 px-4 text-slate-300 capitalize">{ev.source_type}</td>
-                      <td className="py-3 px-4 text-slate-400">
+                      <td className="py-3 px-4 text-slate-700 capitalize font-medium">{ev.source_type}</td>
+                      <td className="py-3 px-4 text-slate-600">
                         {ev.primary_rule ? (
-                          <span className="text-cyan-400 text-[10px] bg-cyan-950/40 px-1.5 py-0.5 rounded border border-cyan-500/20">
+                          <span className="text-cyan-800 font-semibold text-[10px] bg-cyan-50 px-2 py-0.5 rounded border border-cyan-200">
                             {ev.primary_rule}
                           </span>
                         ) : '—'}
                       </td>
-                      <td className="py-3 px-4 text-slate-300 truncate max-w-xs" title={ev.redacted_excerpt}>
+                      <td className="py-3 px-4 text-slate-700 truncate max-w-xs font-normal" title={ev.redacted_excerpt}>
                         {ev.redacted_excerpt}
                       </td>
                       <td className="py-3 px-4 text-center">
-                        <span className={`px-2 py-0.5 rounded text-[10px] ${ev.signals_count > 0 ? 'bg-red-500/20 text-red-300' : 'bg-slate-800 text-slate-400'}`}>
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${ev.signals_count > 0 ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-slate-100 text-slate-600 border border-slate-200'}`}>
                           {ev.signals_count}
                         </span>
                       </td>
-                      <td className="py-3 px-4 text-right text-cyan-400">
+                      <td className="py-3 px-4 text-right text-cyan-700">
                         <span className="material-symbols-outlined text-[16px]">visibility</span>
                       </td>
                     </tr>
@@ -212,7 +212,7 @@ export const EventLog: React.FC = () => {
           )}
 
           {/* Pagination Footer */}
-          <div className="p-4 border-t border-slate-800 flex items-center justify-between text-xs font-mono text-slate-400">
+          <div className="p-4 border-t border-slate-200 flex items-center justify-between text-xs font-mono text-slate-600 bg-white">
             <span>
               Showing {events.length} of {total} events (Page {page} of {totalPages})
             </span>
@@ -220,14 +220,14 @@ export const EventLog: React.FC = () => {
               <button
                 disabled={page <= 1}
                 onClick={() => setPage(page - 1)}
-                className="px-3 py-1 bg-slate-900 border border-slate-700 rounded disabled:opacity-40 text-slate-300"
+                className="px-3 py-1 bg-slate-50 hover:bg-slate-100 border border-slate-300 rounded disabled:opacity-40 text-slate-700 font-medium"
               >
                 Previous
               </button>
               <button
                 disabled={page >= totalPages}
                 onClick={() => setPage(page + 1)}
-                className="px-3 py-1 bg-slate-900 border border-slate-700 rounded disabled:opacity-40 text-slate-300"
+                className="px-3 py-1 bg-slate-50 hover:bg-slate-100 border border-slate-300 rounded disabled:opacity-40 text-slate-700 font-medium"
               >
                 Next
               </button>
@@ -237,15 +237,15 @@ export const EventLog: React.FC = () => {
 
         {/* Right Slide-over Detail Drawer */}
         {selectedEventId && (
-          <div className="fixed inset-y-0 right-0 w-full max-w-md bg-[#0B132B] border-l border-slate-800 shadow-2xl z-50 p-6 flex flex-col gap-5 overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+          <div className="fixed inset-y-0 right-0 w-full max-w-md bg-white border-l border-slate-200 shadow-2xl z-50 p-6 flex flex-col gap-5 overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-4">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-cyan-400 text-[20px]">description</span>
-                <h3 className="text-sm font-bold font-mono text-slate-100">Audit Record Detail</h3>
+                <span className="material-symbols-outlined text-cyan-700 text-[20px]">description</span>
+                <h3 className="text-sm font-bold font-mono text-slate-900">Audit Record Detail</h3>
               </div>
               <button
                 onClick={() => { setSelectedEventId(null); setSelectedDetail(null); }}
-                className="p-1 hover:bg-slate-800 text-slate-400 hover:text-slate-200 rounded"
+                className="p-1 hover:bg-slate-100 text-slate-500 hover:text-slate-800 rounded"
               >
                 <span className="material-symbols-outlined text-[20px]">close</span>
               </button>
@@ -258,78 +258,78 @@ export const EventLog: React.FC = () => {
             ) : (
               <div className="flex flex-col gap-4 text-xs font-mono">
                 {/* Meta Header */}
-                <div className="flex items-center justify-between bg-slate-900 p-3 rounded-lg border border-slate-800">
+                <div className="flex items-center justify-between bg-slate-50 p-3 rounded-lg border border-slate-200">
                   <DecisionBadge decision={selectedDetail.decision} size="md" />
                   <SeverityBadge severity={selectedDetail.risk_level} />
                 </div>
 
                 <div>
-                  <span className="text-[10px] uppercase text-slate-500 block">Event UUID</span>
-                  <span className="text-slate-200 break-all select-all">{selectedDetail.id}</span>
+                  <span className="text-[10px] uppercase font-semibold text-slate-500 block">Event UUID</span>
+                  <span className="text-slate-900 font-mono break-all select-all">{selectedDetail.id}</span>
                 </div>
 
                 <div>
-                  <span className="text-[10px] uppercase text-slate-500 block">Timestamp</span>
-                  <span className="text-slate-300">{new Date(selectedDetail.timestamp).toISOString()}</span>
+                  <span className="text-[10px] uppercase font-semibold text-slate-500 block">Timestamp</span>
+                  <span className="text-slate-700">{new Date(selectedDetail.timestamp).toISOString()}</span>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2 bg-slate-900/60 p-3 rounded-lg border border-slate-800">
+                <div className="grid grid-cols-2 gap-2 bg-slate-50 p-3 rounded-lg border border-slate-200">
                   <div>
-                    <span className="text-[10px] uppercase text-slate-500 block">Source</span>
-                    <span className="text-slate-200 capitalize">{selectedDetail.source_type}</span>
+                    <span className="text-[10px] uppercase font-semibold text-slate-500 block">Source</span>
+                    <span className="text-slate-900 font-bold capitalize">{selectedDetail.source_type}</span>
                   </div>
                   <div>
-                    <span className="text-[10px] uppercase text-slate-500 block">Trust Level</span>
-                    <span className="text-slate-200 capitalize">{selectedDetail.trust_level}</span>
+                    <span className="text-[10px] uppercase font-semibold text-slate-500 block">Trust Level</span>
+                    <span className="text-slate-900 font-bold capitalize">{selectedDetail.trust_level}</span>
                   </div>
                 </div>
 
                 <div>
-                  <span className="text-[10px] uppercase text-slate-500 block">Policy Rationale</span>
-                  <p className="text-slate-200 bg-slate-900 p-3 rounded-lg border border-slate-800 leading-relaxed font-sans text-xs">
+                  <span className="text-[10px] uppercase font-semibold text-slate-500 block">Policy Rationale</span>
+                  <p className="text-slate-800 bg-slate-50 p-3 rounded-lg border border-slate-200 leading-relaxed font-sans text-xs">
                     {selectedDetail.summary}
                   </p>
                 </div>
 
                 <div>
-                  <span className="text-[10px] uppercase text-slate-500 block mb-1">Bounded Input Excerpt</span>
-                  <div className="p-3 bg-[#090D16] border border-slate-800 rounded-lg text-slate-300 max-h-32 overflow-y-auto select-all">
+                  <span className="text-[10px] uppercase font-semibold text-slate-500 block mb-1">Bounded Input Excerpt</span>
+                  <div className="p-3 bg-slate-100 border border-slate-200 rounded-lg text-slate-800 max-h-32 overflow-y-auto select-all">
                     {selectedDetail.redacted_excerpt}
                   </div>
                 </div>
 
                 {selectedDetail.sanitized_text && (
                   <div>
-                    <span className="text-[10px] uppercase text-amber-400 block mb-1">Sanitized Result</span>
-                    <div className="p-3 bg-amber-950/20 border border-amber-500/30 rounded-lg text-slate-200">
+                    <span className="text-[10px] uppercase font-semibold text-amber-800 block mb-1">Sanitized Result</span>
+                    <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-amber-900 font-mono">
                       {selectedDetail.sanitized_text}
                     </div>
                   </div>
                 )}
 
                 <div>
-                  <span className="text-[10px] uppercase text-slate-500 block mb-1">
+                  <span className="text-[10px] uppercase font-semibold text-slate-500 block mb-1">
                     Fired Signals ({selectedDetail.signals.length})
                   </span>
                   {selectedDetail.signals.length === 0 ? (
-                    <span className="text-slate-500 italic">None</span>
+                    <span className="text-slate-400 italic">None</span>
                   ) : (
                     <div className="flex flex-col gap-2">
                       {selectedDetail.signals.map((s, idx) => (
-                        <div key={idx} className="p-2.5 bg-slate-900 rounded border border-slate-800 flex flex-col gap-1">
+                        <div key={idx} className="p-2.5 bg-slate-50 rounded border border-slate-200 flex flex-col gap-1">
                           <div className="flex items-center justify-between">
-                            <span className="font-bold text-cyan-300">{s.rule_id}</span>
+                            <span className="font-bold text-cyan-800">{s.rule_id}</span>
                             <SeverityBadge severity={s.severity} />
                           </div>
-                          <span className="text-slate-300">{s.label}</span>
-                          <span className="text-red-300/80 text-[10px] bg-red-950/30 p-1.5 rounded">{s.evidence}</span>
+                          <span className="text-slate-700 font-medium">{s.label}</span>
+                          <span className="text-red-800 text-[10px] bg-red-50 p-1.5 rounded border border-red-200">{s.evidence}</span>
                         </div>
                       ))}
                     </div>
                   )}
                 </div>
 
-                <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-[10px] text-slate-500">
+                <div className="pt-2 border-t border-slate-200 flex items-center justify-between text-[10px] text-slate-500">
                   <span>Detector: {selectedDetail.detector_version}</span>
                   <span>Policy: v{selectedDetail.policy_version}</span>
                 </div>

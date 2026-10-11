@@ -21,7 +21,7 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B1326] text-[#DAE2FD] flex">
+    <div className="min-h-screen bg-slate-50 text-slate-800 flex antialiased">
       {/* Fixed Left Sidebar */}
       <Sidebar activeScreen={activeScreen} onSelectScreen={setActiveScreen} />
 

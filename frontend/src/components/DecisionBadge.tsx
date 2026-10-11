@@ -8,16 +8,16 @@ interface Props {
 
 export const DecisionBadge: React.FC<Props> = ({ decision, size = 'md' }) => {
   const styles: Record<Decision, string> = {
-    ALLOW: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400',
-    BLOCK: 'bg-red-500/15 border-red-500/40 text-red-400',
-    SANITIZE: 'bg-amber-500/15 border-amber-500/40 text-amber-400',
-    ESCALATE: 'bg-purple-500/15 border-purple-500/40 text-purple-400',
+    ALLOW: 'bg-emerald-50 border-emerald-300 text-emerald-800',
+    BLOCK: 'bg-red-50 border-red-300 text-red-800',
+    SANITIZE: 'bg-amber-50 border-amber-300 text-amber-800',
+    ESCALATE: 'bg-purple-50 border-purple-300 text-purple-800',
   };
 
   const sizeClasses = {
-    sm: 'text-[10px] px-1.5 py-0.5',
+    sm: 'text-[10px] px-2 py-0.5',
     md: 'text-xs px-2.5 py-1',
-    lg: 'text-sm px-3 py-1.5 font-bold',
+    lg: 'text-sm px-3.5 py-1.5 font-bold',
   };
 
   const icons: Record<Decision, string> = {
@@ -29,7 +29,7 @@ export const DecisionBadge: React.FC<Props> = ({ decision, size = 'md' }) => {
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 font-mono font-medium rounded border ${styles[decision] || styles.ALLOW} ${sizeClasses[size]}`}
+      className={`inline-flex items-center gap-1.5 font-mono font-semibold rounded-md border ${styles[decision] || styles.ALLOW} ${sizeClasses[size]}`}
     >
       <span className="material-symbols-outlined text-[14px] leading-none">
         {icons[decision]}
